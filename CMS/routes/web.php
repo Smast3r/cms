@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\User ;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +16,21 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/find',function() {
+
+    $Table =  User::where('id',1)->orderBy('id')->get();
+    return $Table ;
+}) ;
+
+Route::get('insert', function() {
+
+    $date = date("D") ;
+
+   DB::insert('insert into users(name , email , password) values(?,?,?)',['Saad'.$date,'s14192009@gmail.com',$date]);
+
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
