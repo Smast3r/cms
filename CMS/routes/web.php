@@ -24,7 +24,7 @@ Route::get('/findAll',function() {
     //$Table =  User::where('id',1)->orderBy('id', 'desc')->get();
       $Table =  User::orderBy('id', 'asc')->get(); //  this will bring all the things .
     //$Table = User::where('id', '<' , 50)->firstOrFail() ;
-    return $Table ;
+    return "<object>".$Table."</object>" ;
 }) ;
 
 Route::get('find2' , function(){
@@ -85,7 +85,7 @@ Route::get('/update2' , function (){
 
 /* data update with Elequent ends ====================================*/
 
-/* Mass assignment operation or something */
+/* Mass assignment operation or something =========================================================*/
 
 
 Route::get('/create',function (){
@@ -94,10 +94,10 @@ User::create(['name'=>'saadCreatTest3', 'email'=>'create3@create.com' , 'passwor
 
 });
 
-/* Mass assignment operation or something ends */
+/* Mass assignment operation or something ends =========================================================*/
 
 
-/*delete data starts here */
+/*delete data starts here =========================================================*/
 
 Route::get('/delete/{id}',function($id){
 
@@ -110,11 +110,45 @@ Route::get('/delete/{id}',function($id){
 
 Route::get('delete2/{id}',function ($id){
 
-    User::destroy($id) ; 
+    User::destroy($id) ;
 });
 
 
-/* delete data ends here */
+/* delete data ends here =========================================================*/
+
+
+/*Soft delete starts here !!=========================================================*/
+Route::get('/softD',function (){
+
+User::find(6)->delete();
+
+});
+
+Route::get('/RSD',function (){
+
+  return  User::withTrashed()->orderBy('id')->get() ;
+
+});
+
+Route::get('/RSDD',function (){
+
+    return  User::onlyTrashed()->orderBy('id')->get() ;
+
+});
+
+
+Route::get('/restore', function(){
+
+    User::withTrashed()->where('id',1)->restore();
+
+});
+
+
+Route::get('/FD',function (){
+    User::withTrashed()->where('id',4)->forceDelete();
+});
+
+/*Soft delete ends here !!=========================================================*/
 
 Route::get('/dashboard', function () {
     return view('dashboard');
