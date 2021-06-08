@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\User ;
+use App\Models\Files ;
+use App\Models\Role ;
+use App\Models\Country;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -149,6 +153,76 @@ Route::get('/FD',function (){
 });
 
 /*Soft delete ends here !!=========================================================*/
+
+/*Relations starts here !!=========================================================*/
+
+//one to one --
+//
+//Route::get('/user/{id}',function ($id){
+//    return User::find($id)->file ;
+//
+//
+//});
+
+Route::get('/file/{id}/user', function ($id) {
+
+    return Files::find($id)->user ;
+});
+
+
+
+// one to many --
+
+Route::get('user/{id}/posts',function ($id){
+
+    $user = User::find(1) ;
+    foreach ($user->files as $file) {
+
+        echo $file . "<br>";
+
+    }
+});
+
+
+//many to many
+
+Route::get('/admins',function (){
+
+    $role = Role::find(1) ;
+    foreach ($role->users as $User){
+        echo $User->name .' with id : '.$User->id .' is  admin '.'<br>' ;
+    }
+});
+
+
+// accessing pivot
+
+Route::get('/user/pivot',function(){
+
+    $user=User::find(3);
+    foreach($user->roles as $role){
+        echo $role->pivot->user_id." ".$role->pivot->role_id."<br>";
+    }
+});
+
+// has many through
+// this is to get posts from (KSA , Bahrain) only using the users table.
+
+Route::get('user/country',function(){
+
+    $country = Country::find(1) ;
+
+    foreach ($country->files as $file){
+
+        echo $file->name ;
+        echo "<br>" ;
+    }
+
+});
+
+
+/*Relations ends here !!=========================================================*/
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

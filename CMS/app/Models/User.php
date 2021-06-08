@@ -47,4 +47,16 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'] ;
 
+    public function file(){
+        return $this->hasOne('App\Models\Files') ;
+    }
+
+    public function files(){
+        return $this->hasMany('App\Models\Files') ;
+    }
+
+    public function roles(){
+        return $this->belongsToMany('App\Models\Role');
+    }
+
 }
