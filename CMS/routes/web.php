@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Message;
 use Illuminate\Support\Facades\Route;
 use App\Models\User ;
 use App\Models\Files ;
@@ -28,7 +29,11 @@ Route::get('/findAll',function() {
     //$Table =  User::where('id',1)->orderBy('id', 'desc')->get();
       $Table =  User::orderBy('id', 'asc')->get(); //  this will bring all the things .
     //$Table = User::where('id', '<' , 50)->firstOrFail() ;
-    return "<object>".$Table."</object>" ;
+    foreach ($Table as $opj){
+    echo $opj->id.' '.$opj->name.' <br> ';
+    }
+
+
 }) ;
 
 Route::get('find2' , function(){
@@ -216,6 +221,39 @@ Route::get('user/country',function(){
 
         echo $file->name ;
         echo "<br>" ;
+    }
+
+});
+
+
+//Polymorphic relations
+// for example messages sent to a certain user ;
+Route::get('Test',function (){
+
+    $user = User::find(1) ;
+    echo $user.'<br>' ;
+    $i = 1 ;
+    foreach ($user->messages as $message){
+
+        echo 'message: '.$i++.' <br> '.'content: '.$message->content  ;
+
+    }
+});
+
+
+Route::get('TestInv',function (){
+
+    Message::findOrFail(2);
+    $messageable = Message::findOrFail(1)->messageable;
+    return $messageable ;
+});
+
+Route::get('testP',function (){
+
+    $file = Files::find(2) ;
+
+    foreach ($file->tags as $tag){
+        echo $tag->name.'<br>' ;
     }
 
 });

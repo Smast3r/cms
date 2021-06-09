@@ -11,11 +11,22 @@ class Files extends Model
 
 
     protected $fillable = [
-        'name', 'user_id','category'
+        'name', 'category'
     ] ;
 
     public function user(){
         return $this->belongsTo('App\Models\User') ;
     }
 
+
+
+
+    public function messages(){
+        return $this->morphMany('App\Models\Message','messageable');
+    }
+
+
+    public function tags(){
+        return $this->morphToMany('App\Models\Tag','tagable');
+    }
 }
